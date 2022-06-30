@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <script
+			src="https://kit.fontawesome.com/e9011d20e7.js"
+			crossorigin="anonymous"
+		></script>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+   integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+   crossorigin=""/>
+   <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+   integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+   crossorigin=""></script>
+  <title><%= title %></title>
+</head>
+
+<body>
+
+
+  <!-- HEADER -->
+
+  <nav class="header col-12 navbar navbar-light bg-light">
+    <a class="navbar" href="/tickets">
+    <img class="mr-3" src="/images/train.png" width="50" height="50" class="logo" alt="icone ticketac">
+    Ticketac
+    </a>
+    <span>    Bonjour <%= username %> </span>
+    <span>
+      <a class="logout" href="/users/logout">Connexion</a>
+      <a class="logout" href="/users/logout">Derniers voyages</a>
+    </span>
+  </nav>
+
+
+  <!-- GRID -->
+  <div class="container">
+
+    <div class="row mt-3 mb-3">
+
+      <div class="col-12 col-lg-6 offset-lg-2">
+          <h2>Tickets aller-simple:</h2>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-12 col-lg-8 offset-lg-3">
+
+
+        <form class="form-row align-items-center" action="/tickets/ticket-finder" method="POST">
+          
+          <div class="col-auto">
+            <input name="departure" type="text" class="form-control mb-2 mr-sm-2" placeholder="Ville de départ" required>
+          </div>
+          
+          <div class="col-auto">
+            <input name="destination" type="text" class="form-control mb-2 mr-sm-2" placeholder="Destination" required>
+          </div>
+
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-2">Confirmer</button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+       <!-- Map section -->
+      <!-- <div class="col-12 col-lg-6">
+
+  
+        <div id="map"></div>
+
+      </div> -->
+
+      <div class="row">
+      <div class="col-12 offset-md-2 col-md-8 mt-5">
+        <!--City list section-->
+        <% if(bouton && journeyList.length==0){%>
+          <div class="d-flex justify-content-center mt-5">
+            <p class="empty">Pas de trains ? Pas de souci, essayez une autre date</p>
+          </div>
+          
+          <%} else if (!bouton && journeyList.length==0) { %>
+
+
+            <img src="/images/landmark.png" alt="paysage" class="col-6 offset-3">
+
+            
+            <%} else { %>
+         
+
+            <ul class="list-group">
+              <% for(let i=0; i<journeyList.length;i++){%>
+                <li class="list-group-item d-flex justify-content-between align-items-center mb-3">
+                  <p><%=journeyList[i].departure%>/<%=journeyList[i].arrival%></p>
+                    <div>
+                      <p>Départ à <%= journeyList[i].departureTime %> </p>
+                    </div>
+                    <div>
+                      <span><%= journeyList[i].price %> €      <a href="/"><button class="btn btn-danger btn-sm">Details</button></a></span>
+                    </div>
+                    
+                </li>
+                <%}%>
+            </ul>
+            <% } %>
+
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+
+
+    <script src="/javascripts/script.js"></script>
+</body>
+
+</html>

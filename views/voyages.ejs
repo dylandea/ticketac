@@ -39,9 +39,8 @@
         
         <span>   
             <a class="logout breadcrumb-item" href="/users/logout">Déconnexion</a>
-            <a class="breadcrumb-item active" aria-current="page">Réserver</a>
-            <a class="logout breadcrumb-item" href="tickets/voyages">Derniers voyages</a>
-            
+            <a class="logout breadcrumb-item" href="/tickets">Réserver</a>
+            <a class="breadcrumb-item active" aria-current="page">Derniers voyages</a>
           </span>
                 
         
@@ -51,13 +50,13 @@
 
 
   <!-- GRID -->
-  <div class="container-fluid">
+  <div class="container-fluid pt-3">
 
     <div class="row pt-3 mb-3">
 
       <div class="col-12 col-md-6 offset-md-2 pl-3">
-          <h2>Tickets aller-simple:</h2>
-      </div>
+          <h2>Historique de mes billets :</h2>
+      </div> 
 
     </div>
 
@@ -69,64 +68,33 @@
         <table class="table table-borderless table-light">
             <thead>
               <tr>
-                <th scope="col">N°</th>
-                <th scope="col">Voyage</th>
+                
+                
                 <th scope="col">Date</th>
+                <th scope="col">Voyage</th>
                 <th scope="col">Départ</th>
                 <th scope="col">Prix</th>
               </tr>
             </thead>
             <tbody>
-                <%  var total = 0
+                <%  
                     for (let i=0; i<myJourneys.length; i++) { 
-                        total += myJourneys[i].price %> 
+                        %> 
               <tr>
-                <th scope="row"><%= i+1 %> </th>
-                <td><%=myJourneys[i].departure%>/<%=myJourneys[i].arrival%></td>
+                
+                
                 <td><%=dateFormat(new Date(myJourneys[i].date))%></td>
+                <td><%=myJourneys[i].departure%>/<%=myJourneys[i].arrival%></td>
                 <td><%=myJourneys[i].departureTime%>H</td>
                 <td><%=myJourneys[i].price%>€</td>
               </tr>
 <% } %>
             </tbody>
-            <tfoot class="total">
-                <th scope="row">Total</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><%= total %>€</td>
-            </tfoot>
+            
           </table>
 
 
-          <div class="row">
-                    <div class="col-12 text-right">
-                        <form action="/create-checkout-session" method="POST">
-                            <button type="button" class="btn btn-danger ml-auto" data-toggle="modal" data-target="#exampleModal">Payer</button>
-                        </form>
-                    </div>
-                </div>
           
-          <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">La flemme</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Va sur OuiGo
-      </div>
-      <div class="modal-footer">
-        <a href="/tickets/voyages"><button type="button" class="btn btn-secondary">Close</button></a>
-      </div>
-    </div>
-  </div>
-</div>
-
  
 
       </div>
@@ -145,6 +113,8 @@
 
 
     <script src="/javascripts/script.js"></script>
+
+    
 
     
 

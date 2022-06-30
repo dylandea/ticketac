@@ -20,8 +20,20 @@ router.get('/', async function(req, res, next){
       username = req.session.username
       req.session.list = []
 
+      var aggregate = journeyModel.aggregate();
+      aggregate.group( { _id : "$departure", depCount: { $sum: 1 } });
+
+      req.session.data = await aggregate.exec();
+
+      var aggregate2 = journeyModel.aggregate();
+      aggregate2.group( { _id : "$arrival", arrCount: { $sum: 1 } });
+
+      req.session.data2 = await aggregate2.exec();
+
+
+
       
-  res.render('tickets', {title: 'Ticketac', journeyList: req.session.list, bouton : req.session.bouton})
+  res.render('tickets', {title: 'Ticketac', journeyList: req.session.list, bouton : req.session.bouton, data: req.session.data, data2: req.session.data2})
 
     }
   
@@ -42,15 +54,16 @@ router.post('/ticket-finder', async function(req, res, next){
   //requete mongo
   req.session.bouton = true
 
+  console.log(req.body.arrival)
   
   var aggregate = journeyModel.aggregate();
   aggregate.match({"departure": req.body.departure})
   
   var journeyArr = await aggregate.exec()
 
-  req.session.list = journeyArr.filter(x=>x.arrival == req.body.destination)
+  req.session.list = journeyArr.filter(x=>x.arrival == req.body.arrival)
 
-  res.render('tickets', {title: 'Ticketac', journeyList: req.session.list, username: req.session.username, bouton: req.session.bouton})
+  res.render('tickets', {title: 'Ticketac', journeyList: req.session.list, username: req.session.username, bouton: req.session.bouton, data: req.session.data, data2: req.session.data2})
 
 }
 })
@@ -80,17 +93,57 @@ router.get('/addJourney', async function(req, res, next){
 
     }
 
-    
-
-    
-
-    
-
-
-    
 
     
 res.render('mytickets', {title: 'Ticketac', journeyList: req.session.list, bouton : req.session.bouton, myJourneys: req.session.myJourneys})
+
+  }
+
+})
+
+router.get('/voyages', async function(req, res, next){
+
+
+  if (req.session._id == null) {
+    res.redirect('/')
+  } else {
+
+    req.session.bouton = null
+
+      /* await userModel.updateOne(
+        { _id: req.session._id},
+        { journeyHistory: [req.session.myJourneys] }
+     );
+
+     var currentUser = await userModel.findById(req.session._id)
+     .populate('journeyHistory')
+      req.session.journeyHistory = currentUser.journeyHistory */
+      
+
+        if(req.session.voyages == undefined){
+      req.session.voyages = []
+      
+      var temp = req.session.myJourneys
+
+      req.session.voyages.push(...temp)
+
+      req.session.myJourneys = []
+    } else {
+
+      var temp = req.session.myJourneys
+
+      req.session.voyages.push(...temp)
+
+      req.session.myJourneys = []
+
+    }
+/* 
+    var currentUser = await userModel.findById(req.session._id)
+      req.session.journeyHistory = currentUser.journeyHistory */
+    
+
+    
+res.render('voyages', {title: 'Ticketac', journeyList: req.session.list, bouton : req.session.bouton, myJourneys: req.session.voyages, Journeys: req.session.journeyHistory})
 
   }
 

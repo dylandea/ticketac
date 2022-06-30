@@ -1,8 +1,17 @@
+html,body{
+  margin:0;
+  }
+
+
 body {
-  height: 100vh;
+  
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.container-fluid {
+  min-height: 100vh;
   width: 100vw;
   background: linear-gradient(0deg, rgb(32, 109, 252), rgb(182, 206, 251) 90%) no-repeat;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -11,6 +20,10 @@ a {
 
 span {
   color: black;
+}
+
+.breadcrumb-item {
+  color: grey;
 }
 
 h2 {
@@ -24,33 +37,11 @@ h2 {
 
 .logout {
   margin-left: auto;
-  margin-right: 15px;
 }
 
 li{
   border-radius: 4px;
 }
-
-
-
-
-
-.home {
-  background-image: url('../images/weather.jpg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  
-  color: #FFFFFF;
-  text-shadow: 1px 1px 1px black;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 
 .navItem{
   margin-bottom: 10px;
@@ -65,11 +56,7 @@ li{
   color: #FFFFFF;
 }
 
-.deletepicto{
-  color: #FFBF43;
-}
+.total {
+  background: #fd6044cd;
 
-#map { 
-  height: 400px; 
 }
-

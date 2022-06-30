@@ -26,6 +26,7 @@ router.post('/sign-up', async function(req, res, next){
 
       req.session._id = userSaved._id
       req.session.username = userSaved.username
+
       
       res.redirect('/tickets')
 

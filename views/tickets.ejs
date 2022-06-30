@@ -109,7 +109,7 @@
                       <p>Départ à <%= journeyList[i].departureTime %> </p>
                     </div>
                     <div>
-                      <span><%= journeyList[i].price %> €      <a href="/"><button class="btn btn-danger btn-sm">Details</button></a></span>
+                      <span><%= journeyList[i].price %> €      <a href="/tickets/addJourney?id=<%= journeyList[i]._id %> "><button class="btn btn-danger btn-sm">Choisir</button></a></span>
                     </div>
                     
                 </li>

@@ -29,7 +29,7 @@ router.get('/', async function(req, res, next){
 
 
 
-router.get('/ticket-finder', async function(req, res, next){
+router.get('/ticket-finder', function(req, res, next){
   
     res.redirect('/tickets')
 
@@ -53,6 +53,47 @@ router.post('/ticket-finder', async function(req, res, next){
   res.render('tickets', {title: 'Ticketac', journeyList: req.session.list, username: req.session.username, bouton: req.session.bouton})
 
 }
+})
+
+
+router.get('/addJourney', async function(req, res, next){
+
+
+  if (req.session._id == null) {
+    res.redirect('/')
+  } else {
+
+    req.session.bouton = null
+
+    if(req.session.myJourneys == undefined) {
+
+      req.session.myJourneys = []
+      
+      var temp = req.session.list.filter(x=>x._id == req.query.id)
+
+      req.session.myJourneys.push(...temp)
+    } else {
+
+    var temp = req.session.list.filter(x=>x._id == req.query.id)
+
+    req.session.myJourneys.push(...temp)
+
+    }
+
+    
+
+    
+
+    
+
+
+    
+
+    
+res.render('mytickets', {title: 'Ticketac', journeyList: req.session.list, bouton : req.session.bouton, myJourneys: req.session.myJourneys})
+
+  }
+
 })
 
 

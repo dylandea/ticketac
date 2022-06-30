@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <script
+			src="https://kit.fontawesome.com/e9011d20e7.js"
+			crossorigin="anonymous"
+		></script>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+   integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+   crossorigin=""/>
+   <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+   integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+   crossorigin=""></script>
+  <title><%= title %></title>
+</head>
+
+<body>
+
+
+  <!-- HEADER -->
+
+  <nav class="header col-12 navbar navbar-light bg-light">
+    <a class="navbar" href="/tickets">
+    <img class="mr-3" src="/images/train.png" width="50" height="50" class="logo" alt="icone ticketac">
+    Ticketac
+    </a>
+    <span>    Bonjour <%= username %> </span>
+    <span>
+      <a class="logout" href="/users/logout">Connexion</a>
+
+      <a class="logout" href="/users/logout">Derniers voyages</a>
+    </span>
+  </nav>
+
+
+  <!-- GRID -->
+  <div class="container">
+
+    <div class="row mt-3 mb-3">
+
+      <div class="col-12 col-lg-6 offset-lg-2">
+          <h2>Tickets aller-simple:</h2>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-12 col-lg-8 offset-lg-2">
+
+
+        <table class="table table-borderless table-light">
+            <thead>
+              <tr>
+                <th scope="col">N°</th>
+                <th scope="col">Voyage</th>
+                <th scope="col">Date</th>
+                <th scope="col">Départ</th>
+                <th scope="col">Prix</th>
+              </tr>
+            </thead>
+            <tbody>
+                <%  var total = 0
+                    for (let i=0; i<myJourneys.length; i++) { 
+                        total += myJourneys[i].price %> 
+              <tr>
+                <th scope="row"><%= i+1 %> </th>
+                <td><%=myJourneys[i].departure%>/<%=myJourneys[i].arrival%></td>
+                <td><%=dateFormat(new Date(myJourneys[i].date))%></td>
+                <td><%=myJourneys[i].departureTime%>H</td>
+                <td><%=myJourneys[i].price%>€</td>
+              </tr>
+<% } %>
+            </tbody>
+            <tfoot class="bg-warning">
+                <th scope="row">Total</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><%= total %>€</td>
+            </tfoot>
+          </table>
+
+
+          <div class="row">
+                    <div class="col-12 text-right">
+                        <form action="/create-checkout-session" method="POST">
+                            <button type="button" class="btn btn-danger ml-auto" data-toggle="modal" data-target="#exampleModal">Payer</button>
+                        </form>
+                    </div>
+                </div>
+          
+          <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Trop la flemme</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Va sur OuiGo
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+
+
+    <script src="/javascripts/script.js"></script>
+
+    
+
+    <div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Eh vasy bouge de là !</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Trop la flemme d'implémenter un système de paiement. Appuie sur "Close" et va sur OuiGo.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</body>
+
+</html>

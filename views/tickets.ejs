@@ -57,7 +57,7 @@
           
           <div class="col-auto">
             <select name="departure" class="custom-select mb-2 mr-sm-2" id="inlineFormCustomSelect">
-              <option selected>Départ...</option>
+              <option selected><%=destvalue%></option>
               <% for (let i=0; i<data.length; i++)  { %>
               <option value="<%= data[i]._id %>"><%= data[i]._id %></option>
               <% } %>
@@ -67,7 +67,7 @@
           
           <div class="col-auto">
             <select name="arrival" class="custom-select mb-2 mr-sm-2" id="inlineFormCustomSelect">
-              <option selected>Arrivée</option>
+              <option selected><%=arrivalue%></option>
               <% for (let i=0; i<data2.length; i++)  { %>
                 <option value="<%= data2[i]._id %>"><%= data2[i]._id %></option>
                 <% } %>
@@ -75,19 +75,12 @@
             <!-- <input name="destination" type="text" class="form-control mb-2 mr-sm-2" placeholder="Destination" required> -->
           </div>
 
-          <div class="col-auto">
-            <input name="date" type='text' class="form-control" id='datepicker' >
+          
+            <div class="col-auto input mb-2">
+          
+            <input class="form-control" name="ticketdate" type="date" value="<%=datevalue%>" id="start" min="2018-11-20" max="2018-11-24">
           </div>
-          <script type="text/javascript">
-            $(document).ready(function(){
-             $('#datepicker').datepicker({
-              "format": "dd-mm-yy",
-             /*  "startDate": "-5d",
-              "endDate": "09-15-2018",
-              "keyboardNavigation": false */
-             }); 
-            });
-            </script>
+          
 
           <div class="col-auto">
             <button type="submit" class="btn btn-primary mb-2">Confirmer</button>

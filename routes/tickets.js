@@ -15,6 +15,28 @@ router.get('/', async function(req, res, next){
     if (req.session._id == null) {
       res.redirect('/')
     } else {
+      
+      if (req.session.datevalue == undefined) {
+        var datevalue = "2018-11-20"
+      } else {
+        var datevalue = req.session.datevalue
+      }
+
+      if (req.session.destvalue == undefined) {
+        var destvalue = "Départ..."
+      } else {
+        var destvalue = req.session.destvalue
+      }
+
+      if (req.session.arrivalue == undefined) {
+        var arrivalue = "Arrivée..."
+      } else {
+        var arrivalue = req.session.arrivalue
+      }
+
+
+
+
 
       req.session.bouton = null
       username = req.session.username
@@ -54,7 +76,7 @@ router.get('/', async function(req, res, next){
 
 
       
-  res.render('tickets', {title: 'Ticketac', journeyList: req.session.list, bouton : req.session.bouton, data: req.session.data, data2: req.session.data2})
+  res.render('tickets', {title: 'Ticketac', journeyList: req.session.list, bouton : req.session.bouton, data: req.session.data, data2: req.session.data2, datevalue, destvalue, arrivalue})
 
     }
   
@@ -74,15 +96,32 @@ router.post('/ticket-finder', async function(req, res, next){
   } else {
   //requete mongo
   req.session.bouton = true
+
+  req.session.datevalue = req.body.ticketdate
+  var datevalue = req.session.datevalue
   
  /*  var aggregate = journeyModel.aggregate();
   aggregate.match({"departure": req.body.departure}) */
   
   var journeyArr = await journeyModel.find({departure: req.body.departure})
 
-  req.session.list = journeyArr.filter(x=>x.arrival == req.body.arrival)
+  var filtered = journeyArr.filter(x=>x.arrival == req.body.arrival)
+  
+  var daterequete = new Date(req.body.ticketdate)
 
-  res.render('tickets', {title: 'Ticketac', journeyList: req.session.list, username: req.session.username, bouton: req.session.bouton, data: req.session.data, data2: req.session.data2})
+  var destvalue = req.body.departure
+  var arrivalue = req.body.arrival
+
+  
+
+  
+  
+
+  req.session.list = filtered.filter(x=>JSON.stringify(x.date) == JSON.stringify(daterequete))
+
+  
+
+  res.render('tickets', {title: 'Ticketac', journeyList: req.session.list, username: req.session.username, bouton: req.session.bouton, data: req.session.data, data2: req.session.data2, datevalue, destvalue, arrivalue})
 
 }
 })
@@ -164,28 +203,6 @@ router.get('/voyages', async function(req, res, next){
       req.session.myJourneys = []
 
   }
-      
-/* 
-        if(req.session.voyages == undefined){
-      req.session.voyages = []
-      
-      var temp = req.session.myJourneys
-
-      req.session.voyages.push(...temp)
-
-      req.session.myJourneys = []
-    } else {
-
-      var temp = req.session.myJourneys
-
-      req.session.voyages.push(...temp)
-
-      req.session.myJourneys = []
-
-    } */
-/* 
-    var currentUser = await userModel.findById(req.session._id)
-      req.session.journeyHistory = currentUser.journeyHistory */
     
 
     

@@ -53,13 +53,11 @@ router.post('/ticket-finder', async function(req, res, next){
   } else {
   //requete mongo
   req.session.bouton = true
-
-  console.log(req.body.arrival)
   
-  var aggregate = journeyModel.aggregate();
-  aggregate.match({"departure": req.body.departure})
+ /*  var aggregate = journeyModel.aggregate();
+  aggregate.match({"departure": req.body.departure}) */
   
-  var journeyArr = await aggregate.exec()
+  var journeyArr = await journeyModel.find({departure: req.body.departure})
 
   req.session.list = journeyArr.filter(x=>x.arrival == req.body.arrival)
 
@@ -110,16 +108,19 @@ router.get('/voyages', async function(req, res, next){
 
     req.session.bouton = null
 
-      /* await userModel.updateOne(
-        { _id: req.session._id},
-        { journeyHistory: [req.session.myJourneys] }
-     );
+for (let i=0; i<req.session.myJourneys; i++) {
+  await userModel.updateOne(
+    { _id: req.session._id},
+     { $push: {journeyHistory: req.session.myJourneys[i]._id}}
+ );
+}
+      
 
      var currentUser = await userModel.findById(req.session._id)
      .populate('journeyHistory')
-      req.session.journeyHistory = currentUser.journeyHistory */
+      req.session.journeyHistory = currentUser.journeyHistory 
       
-
+/* 
         if(req.session.voyages == undefined){
       req.session.voyages = []
       
@@ -136,7 +137,7 @@ router.get('/voyages', async function(req, res, next){
 
       req.session.myJourneys = []
 
-    }
+    } */
 /* 
     var currentUser = await userModel.findById(req.session._id)
       req.session.journeyHistory = currentUser.journeyHistory */

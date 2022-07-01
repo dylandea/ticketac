@@ -22,14 +22,35 @@ router.get('/', async function(req, res, next){
 
       var aggregate = journeyModel.aggregate();
       aggregate.group( { _id : "$departure", depCount: { $sum: 1 } });
+      
+      var agre = await aggregate.exec()
+      
+      
+      req.session.data = agre.sort((a,b)=> {
+        if (a._id < b._id) {
+          return -1
+        } else {
+          return 1
+        }
+      });
 
-      req.session.data = await aggregate.exec();
+      
 
       var aggregate2 = journeyModel.aggregate();
       aggregate2.group( { _id : "$arrival", arrCount: { $sum: 1 } });
 
-      req.session.data2 = await aggregate2.exec();
+      var agre2 = await aggregate2.exec();
+      
+     
+      req.session.data2 = agre2.sort((a,b)=> {
+        if (a._id < b._id) {
+          return -1
+        } else {
+          return 1
+        }
+      });
 
+      
 
 
       
@@ -108,17 +129,41 @@ router.get('/voyages', async function(req, res, next){
 
     req.session.bouton = null
 
-for (let i=0; i<req.session.myJourneys; i++) {
-  await userModel.updateOne(
-    { _id: req.session._id},
-     { $push: {journeyHistory: req.session.myJourneys[i]._id}}
- );
-}
+    if (req.session.myJourneys == undefined) {
+      req.session.myJourneys = []
+
+      for (let i=0; i<req.session.myJourneys.length; i++) {
+      
+        await userModel.updateOne(
+          { _id: req.session._id},
+          { $push: {journeyHistory: req.session.myJourneys[i]._id}}
+        );
+      }
+        
+  
+       var currentUser = await userModel.findById(req.session._id)
+       .populate('journeyHistory')
+        req.session.journeyHistory = currentUser.journeyHistory 
+  
+        req.session.myJourneys = []
+    } else {
+
+    for (let i=0; i<req.session.myJourneys.length; i++) {
+      
+      await userModel.updateOne(
+        { _id: req.session._id},
+        { $push: {journeyHistory: req.session.myJourneys[i]._id}}
+      );
+    }
       
 
      var currentUser = await userModel.findById(req.session._id)
      .populate('journeyHistory')
       req.session.journeyHistory = currentUser.journeyHistory 
+
+      req.session.myJourneys = []
+
+  }
       
 /* 
         if(req.session.voyages == undefined){
@@ -144,7 +189,7 @@ for (let i=0; i<req.session.myJourneys; i++) {
     
 
     
-res.render('voyages', {title: 'Ticketac', journeyList: req.session.list, bouton : req.session.bouton, myJourneys: req.session.voyages, Journeys: req.session.journeyHistory})
+res.render('voyages', {title: 'Ticketac', journeyList: req.session.list, bouton : req.session.bouton, myJourneys: req.session.journeyHistory})
 
   }
 
